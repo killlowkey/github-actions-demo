@@ -1,0 +1,27 @@
+name: maven-app
+
+on:
+  # push 触发任务
+  push:
+    branches: main
+  gollum:
+  workflow_dispatch:
+  schedule:
+    # 每天 10:30 执行，UTC时间要比北京时间晚8小时
+    - cron: '30 2 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: start application
+        env:
+          # 变量名大小写要一致，不然在应用中无法获取到变量值
+          SERVER_KEY: ${{ secrets.SERVER_KEY }}
+        run: mvn compile exec:java

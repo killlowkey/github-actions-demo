@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    // 更换阿里云仓库
+    maven {
+        url 'https://maven.aliyun.com/repository/public/'
+    }
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.github.kevinsawicki:http-request:6.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// jar包启动类
+jar {
+    manifest {
+        attributes("Main-Class": "com.example.gradle.app.PushMessage'")
+    }
+}
+
+
+// 启动应用：gradlew runMain
+task runMain(type: JavaExec) {
+    main = 'com.example.gradle.app.PushMessage'
+    classpath = sourceSets.main.runtimeClasspath
+}
